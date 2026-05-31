@@ -445,5 +445,161 @@ function Slide8({ config }) {
   );
 }
 
+// ─── SLIDE 9: PRZEPŁYW ZAMÓWIENIA ────────────────────────────────
+export function Slide9() {
+  const vline = (color = "#94a3b8", h = 14) => (
+    <div style={{ width: 2, height: h, background: color, margin: "0 auto" }} />
+  );
+  const arrowTip = (color = "#94a3b8") => (
+    <div style={{ textAlign: "center", fontSize: 12, color, lineHeight: 1, marginTop: -2 }}>▼</div>
+  );
+
+  return (
+    <div style={{ padding: "40px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>
+      <SlideHeader
+        title="Przepływ zamówienia"
+        subtitle="Automatyczna weryfikacja — system sam decyduje o ścieżce"
+      />
+
+      {/* START */}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{
+          background: BRAND.dark, borderRadius: 14, padding: "14px 40px",
+          display: "flex", alignItems: "center", gap: 12,
+          border: "2px solid rgba(10,77,181,0.3)",
+        }}>
+          <span style={{ fontSize: 28 }}>🛒</span>
+          <div>
+            <div style={{ fontWeight: 800, fontSize: 16, color: "#fff" }}>Kupujący składa zamówienie</div>
+            <div style={{ fontSize: 12, color: BRAND.subLight, marginTop: 2 }}>Przez platformę BHF B2B</div>
+          </div>
+        </div>
+      </div>
+
+      {vline("#94a3b8", 12)}
+      {arrowTip()}
+
+      {/* SYSTEM CHECK */}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{
+          background: BRAND.white, borderRadius: 12, padding: "12px 32px",
+          border: `2px solid ${BRAND.primary}`, textAlign: "center",
+          boxShadow: "0 2px 12px rgba(10,77,181,0.1)",
+        }}>
+          <div style={{ fontSize: 20, marginBottom: 4 }}>⚙️</div>
+          <div style={{ fontWeight: 800, fontSize: 14, color: BRAND.dark }}>System weryfikuje automatycznie</div>
+          <div style={{ display: "flex", gap: 10, marginTop: 8, justifyContent: "center" }}>
+            {["Czy zamówienie ma uwagi?", "Czy limit miesięczny przekroczony?"].map(q => (
+              <span key={q} style={{
+                fontSize: 11, color: BRAND.subLight,
+                background: "#f1f5f9", borderRadius: 10, padding: "2px 10px",
+              }}>{q}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Y-CONNECTOR */}
+      <div style={{ position: "relative", height: 36 }}>
+        <div style={{ position: "absolute", left: "50%", top: 0, width: 2, height: 16, background: "#94a3b8", transform: "translateX(-50%)" }} />
+        <div style={{ position: "absolute", left: "25%", top: 16, right: "25%", height: 2, background: "#94a3b8" }} />
+        <div style={{ position: "absolute", left: "25%", top: 16, width: 2, height: 20, background: "#16a34a", transform: "translateX(-50%)" }} />
+        <div style={{ position: "absolute", right: "25%", top: 16, width: 2, height: 20, background: BRAND.accent, transform: "translateX(50%)" }} />
+      </div>
+
+      {/* TWO COLUMNS */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+
+        {/* AUTO PATH */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <div style={{
+            background: "#f0fdf4", border: "2px solid #16a34a", borderRadius: 20,
+            padding: "5px 16px", fontSize: 12, fontWeight: 700, color: "#16a34a",
+          }}>✅ NIE — brak uwag, limit OK</div>
+
+          {vline("#16a34a")}
+          {arrowTip("#16a34a")}
+
+          <div style={{ width: "100%", background: "#16a34a", borderRadius: 12, padding: 14, textAlign: "center" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.65)", letterSpacing: 1, marginBottom: 4 }}>STATUS</div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", letterSpacing: 1 }}>NOWE</div>
+          </div>
+
+          {vline("#16a34a")}
+          {arrowTip("#16a34a")}
+
+          <Card hover={false} style={{ width: "100%", textAlign: "center", border: "2px solid #16a34a22", padding: "18px 20px" }}>
+            <div style={{ fontSize: 28 }}>📦</div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: BRAND.dark, marginTop: 8 }}>Przekazane do realizacji</div>
+            <div style={{ fontSize: 11, color: BRAND.subLight, marginTop: 4 }}>Automatycznie — brak akcji wymagany</div>
+          </Card>
+        </div>
+
+        {/* SUPERVISOR PATH */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <div style={{
+            background: "#fff7ed", border: `2px solid ${BRAND.accent}`, borderRadius: 20,
+            padding: "5px 16px", fontSize: 12, fontWeight: 700, color: BRAND.accent,
+          }}>⚠️ TAK — uwagi lub limit przekroczony</div>
+
+          {vline(BRAND.accent)}
+          {arrowTip(BRAND.accent)}
+
+          <div style={{ width: "100%", background: BRAND.accent, borderRadius: 12, padding: 14, textAlign: "center" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.65)", letterSpacing: 1, marginBottom: 4 }}>STATUS</div>
+            <div style={{ fontSize: 15, fontWeight: 900, color: "#fff", letterSpacing: 0.5 }}>OCZEKUJE NA ZATWIERDZENIE</div>
+          </div>
+
+          {vline(BRAND.accent)}
+          {arrowTip(BRAND.accent)}
+
+          <Card hover={false} style={{ width: "100%", textAlign: "center", border: `2px solid ${BRAND.accent}33`, padding: 12 }}>
+            <div style={{ fontSize: 22 }}>👁️</div>
+            <div style={{ fontWeight: 800, fontSize: 14, color: BRAND.dark, marginTop: 6 }}>Supervisor decyduje</div>
+          </Card>
+
+          {/* 3-WAY SPLIT */}
+          <div style={{ position: "relative", width: "100%", height: 28 }}>
+            <div style={{ position: "absolute", left: "50%", top: 0, width: 2, height: 12, background: "#94a3b8", transform: "translateX(-50%)" }} />
+            <div style={{ position: "absolute", left: "16.5%", top: 12, right: "16.5%", height: 2, background: "#94a3b8" }} />
+            <div style={{ position: "absolute", left: "16.5%", top: 12, width: 2, height: 16, background: "#16a34a", transform: "translateX(-50%)" }} />
+            <div style={{ position: "absolute", left: "50%", top: 12, width: 2, height: 16, background: BRAND.primary, transform: "translateX(-50%)" }} />
+            <div style={{ position: "absolute", right: "16.5%", top: 12, width: 2, height: 16, background: "#dc2626", transform: "translateX(50%)" }} />
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, width: "100%" }}>
+            {[
+              { icon: "✅", label: "Zatwierdź", result: "POTWIERDZONE", color: "#16a34a", bg: "#f0fdf4" },
+              { icon: "✏️", label: "Edytuj", result: "POTWIERDZONE", color: BRAND.primary, bg: "#eff6ff" },
+              { icon: "❌", label: "Odrzuć", result: "ANULOWANE", color: "#dc2626", bg: "#fef2f2" },
+            ].map(({ icon, label, result, color, bg }) => (
+              <div key={label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                <div style={{ background: bg, border: `1px solid ${color}33`, borderRadius: 10, padding: "8px 4px", textAlign: "center", width: "100%" }}>
+                  <div style={{ fontSize: 18 }}>{icon}</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color, marginTop: 4 }}>{label}</div>
+                </div>
+                <div style={{ width: 2, height: 8, background: color }} />
+                <div style={{ background: color, borderRadius: 8, padding: "4px 6px", textAlign: "center", width: "100%" }}>
+                  <div style={{ fontSize: 9, fontWeight: 800, color: "#fff", letterSpacing: 0.3 }}>{result}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      {/* FOOTER */}
+      <div style={{ marginTop: 16 }}>
+        <Card hover={false} style={{ background: BRAND.dark, border: "none", padding: "10px 20px" }}>
+          <p style={{ color: "#fff", fontSize: 12, margin: 0, textAlign: "center" }}>
+            📋 Po zatwierdzeniu przez Supervisora zamówienie zmienia status na <strong>POTWIERDZONE</strong> i trafia do eksportu XML → <strong>W REALIZACJI</strong>
+          </p>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
 // ─── EXPORTS ──────────────────────────────────────────────────────
 export { Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8 };
