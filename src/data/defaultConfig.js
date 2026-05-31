@@ -19,14 +19,16 @@ export const defaultConfig = {
   doneFeatures: [
     "Logowanie i intuicyjny dashboard z podglądem limitów",
     "Składanie zamówień ze swojego kontraktu",
-    "Wybór sposobu dostawy (kurier lub odbiór własny)",
+    "Wybór sposobu dostawy (kurier lub odbiór z oddziału BHF)",
     "Automatyczna kontrola limitów miesięcznych",
     "Zatwierdzanie zamówień przez Supervisora",
-    "Pełna historia zamówień z statusami",
+    "Pełna historia zamówień z filtrami i statusami",
     "Katalog produktów z filtrami i cenami indywidualnymi",
     "Widok mobilny — formularz i przycisk zawsze widoczne",
     "Grupy cenowe — indywidualne cenniki dla firm",
     "Zarządzanie klientami, kontraktami i użytkownikami",
+    "Eksport zamówień do XML — automatyczna zmiana statusu na W realizacji",
+    "Import masowy danych z pliku XLSX (produkty, klienci, użytkownicy, punkty dostawy)",
   ],
   soonFeatures: [
     { icon: "🔁", title: "Zamów ponownie", desc: "Powtórz poprzednie zamówienie jednym kliknięciem — bez ręcznego wybierania produktów." },

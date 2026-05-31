@@ -445,6 +445,126 @@ function Slide8({ config }) {
   );
 }
 
+// ─── SLIDE 10: INTEGRACJA Z SYSTEMEM BHF ─────────────────────────
+export function Slide10() {
+  const steps = [
+    { label: "NOWE / POTWIERDZONE", icon: "📋", color: "#16a34a", bg: "#f0fdf4" },
+    { label: "Admin eksportuje XML", icon: "⬇️", color: BRAND.primary, bg: "#eff6ff", action: true },
+    { label: "W REALIZACJI", icon: "🔄", color: "#0d9488", bg: "#f0fdfa" },
+    { label: "BHF realizuje dostawę", icon: "📦", color: BRAND.accent, bg: "#fff7ed" },
+  ];
+
+  const xmlFields = [
+    { section: "Nagłówek", fields: ["Numer zamówienia", "Data złożenia", "Oczekiwana data dostawy", "Uwagi do zamówienia"] },
+    { section: "Strony", fields: ["Kupujący: ILN + NIP", "Sprzedawca: NIP BHF"] },
+    { section: "Pozycje", fields: ["Kod produktu", "Ilość + jednostka", "Cena netto", "Nazwa produktu"] },
+    { section: "Podsumowanie", fields: ["Liczba pozycji", "Łączna wartość netto"] },
+  ];
+
+  return (
+    <div style={{ padding: "40px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>
+      <SlideHeader
+        title="Integracja z systemem BHF"
+        subtitle="Zatwierdzone zamówienia eksportowane do XML — status zmienia się automatycznie"
+      />
+
+      {/* STATUS FLOW */}
+      <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 24 }}>
+        {steps.map(({ label, icon, color, bg, action }, i) => (
+          <div key={label} style={{ display: "flex", alignItems: "center", flex: 1 }}>
+            <div style={{
+              flex: 1, background: bg, border: `2px solid ${color}${action ? "ff" : "44"}`,
+              borderRadius: 10, padding: "10px 12px", textAlign: "center",
+              ...(action ? { boxShadow: `0 0 0 3px ${color}22` } : {}),
+            }}>
+              <div style={{ fontSize: 20, marginBottom: 4 }}>{icon}</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color, lineHeight: 1.3 }}>{label}</div>
+            </div>
+            {i < steps.length - 1 && (
+              <div style={{ fontSize: 18, color: "#94a3b8", flexShrink: 0, padding: "0 6px" }}>→</div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* MAIN CONTENT */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+
+        {/* LEFT: Export options */}
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: BRAND.dark, marginBottom: 12 }}>Zarządzanie eksportem</p>
+          {[
+            {
+              icon: "🔍", color: BRAND.primary, bg: "#eff6ff",
+              title: "Filtrowanie zamówień",
+              desc: "Admin filtruje listę po kliencie, statusie lub oddziale BHF — widzi tylko to, co go dotyczy.",
+            },
+            {
+              icon: "📄", color: "#0d9488", bg: "#f0fdfa",
+              title: "Eksport pojedynczy",
+              desc: "Jedno zamówienie → jeden plik XML gotowy do importu. Status automatycznie zmienia się na W REALIZACJI.",
+            },
+            {
+              icon: "📦", color: "#7c3aed", bg: "#f5f3ff",
+              title: "Eksport zbiorczy",
+              desc: "Zaznacz wiele zamówień → pobierz archiwum ZIP z plikami XML. Wszystkie statusy aktualizowane jednocześnie.",
+            },
+            {
+              icon: "📊", color: BRAND.accent, bg: "#fff7ed",
+              title: "Historia i audyt",
+              desc: "Każde zamówienie W REALIZACJI pozostaje w systemie z pełną historią — numer, data, klient, pozycje, wartość.",
+            },
+          ].map(({ icon, color, bg, title, desc }) => (
+            <Card key={title} style={{ marginBottom: 10, padding: 14, background: bg, border: `1px solid ${color}33` }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 20, flexShrink: 0 }}>{icon}</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color, marginBottom: 4 }}>{title}</div>
+                  <p style={{ fontSize: 12, color: BRAND.subDark, margin: 0, lineHeight: 1.5 }}>{desc}</p>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        {/* RIGHT: XML structure */}
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: BRAND.dark, marginBottom: 12 }}>Struktura pliku XML</p>
+          <Card hover={false} style={{ padding: 0, overflow: "hidden" }}>
+            <div style={{ background: BRAND.dark, padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 14 }}>📄</span>
+              <span style={{ fontWeight: 700, fontSize: 12, color: "#93c5fd", fontFamily: "monospace" }}>zamowienie-{"{id}"}.xml</span>
+            </div>
+            <div style={{ padding: "12px 16px" }}>
+              {xmlFields.map(({ section, fields }) => (
+                <div key={section} style={{ marginBottom: 12 }}>
+                  <div style={{ fontSize: 11, fontWeight: 800, color: BRAND.primary, letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 6 }}>
+                    {section}
+                  </div>
+                  {fields.map(f => (
+                    <div key={f} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                      <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#cbd5e1", flexShrink: 0 }} />
+                      <span style={{ fontSize: 12, color: BRAND.subDark, fontFamily: "monospace" }}>{f}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </Card>
+          <Card hover={false} style={{ marginTop: 12, background: BRAND.dark, border: "none", padding: "12px 16px" }}>
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <span style={{ fontSize: 18 }}>🔗</span>
+              <p style={{ fontSize: 12, color: "#fff", margin: 0, lineHeight: 1.5 }}>
+                Format <strong style={{ color: "#93c5fd" }}>EDI-XML</strong> — gotowy do importu w systemach WMS, ERP lub arkuszach kalkulacyjnych.
+              </p>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── SLIDE 9: PRZEPŁYW ZAMÓWIENIA ────────────────────────────────
 export function Slide9() {
   const vline = (color = "#94a3b8", h = 14) => (
