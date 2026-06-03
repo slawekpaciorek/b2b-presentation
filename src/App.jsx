@@ -20,10 +20,20 @@ function PresentationViewer({ presentation, onBack }) {
 
   const [current, setCurrent] = useState(0);
   const [key, setKey] = useState(0);
+  const [projector, setProjector] = useState(() => {
+    try { return localStorage.getItem("slide-projector") !== "false"; } catch { return true; }
+  });
 
   const goTo = useCallback((i) => { setCurrent(i); setKey(k => k + 1); }, []);
   const prev = useCallback(() => goTo(Math.max(0, current - 1)), [current, goTo]);
   const next = useCallback(() => goTo(Math.min(slides.length - 1, current + 1)), [current, goTo, slides.length]);
+  const toggleProjector = useCallback(() => {
+    setProjector(p => {
+      const next = !p;
+      try { localStorage.setItem("slide-projector", String(next)); } catch {}
+      return next;
+    });
+  }, []);
 
   useEffect(() => {
     const handler = (e) => {
@@ -38,9 +48,15 @@ function PresentationViewer({ presentation, onBack }) {
   const { Component } = slides[current];
   const pct = ((current + 1) / slides.length) * 100;
 
+  const SCALE = 1.4;
+  const projectorStyle = projector
+    ? `.slide{max-width:calc(100vw/${SCALE})!important;min-height:calc(100vh/${SCALE})!important;zoom:${SCALE}}.slide>div{min-height:calc(100vh/${SCALE})!important}`
+    : "";
+
   return (
     <>
       {template.globalStyle && <style>{template.globalStyle}</style>}
+      <style>{projectorStyle}</style>
 
       <div style={{ position:"fixed", top:0, left:0, right:0, height:3, zIndex:100, background:"#1e293b" }}>
         <div style={{ height:"100%", background:BRAND.grad, width:`${pct}%`,
@@ -78,6 +94,12 @@ function PresentationViewer({ presentation, onBack }) {
         </div>
 
         <div style={{ display:"flex", gap:8, marginLeft:16, flexShrink:0 }}>
+          <button onClick={toggleProjector} title={projector ? "Tryb ekranu" : "Tryb rzutnika"} style={{
+            background: projector ? BRAND.primary : "rgba(255,255,255,0.08)",
+            color: projector ? "#fff" : "#94a3b8",
+            border:"none", borderRadius:6, padding:"5px 10px", fontSize:14,
+            cursor:"pointer", fontFamily:"Outfit,sans-serif", lineHeight:1,
+          }}>{projector ? "📺" : "💻"}</button>
           <button onClick={prev} disabled={current === 0} style={{
             background: current === 0 ? "rgba(255,255,255,0.04)" : BRAND.primary,
             color: current === 0 ? "#475569" : "#fff",
