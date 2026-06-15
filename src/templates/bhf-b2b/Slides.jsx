@@ -724,5 +724,252 @@ export function Slide9() {
   );
 }
 
+// ─── SLIDE 11: SYSTEM ZGŁOSZEŃ ───────────────────────────────────
+export function Slide11() {
+  const flow = [
+    { label: "Zamawiający tworzy zgłoszenie", icon: "💬", color: BRAND.primary, bg: "#eff6ff" },
+    { label: "Rozmowa w zespole firmy", icon: "👥", color: "#7c3aed", bg: "#f5f3ff" },
+    { label: "Eskalacja do BHF", icon: "🚀", color: BRAND.accent, bg: "#fff7ed", action: true },
+    { label: "Rozwiązane", icon: "✅", color: "#16a34a", bg: "#f0fdf4" },
+  ];
+
+  const categories = [
+    { icon: "📦", color: "#dc2626", title: "Reklamacja", desc: "Problem z dostarczonym towarem — uszkodzenie, niezgodność, braki." },
+    { icon: "❓", color: BRAND.primary, title: "Pytanie", desc: "Pytanie o produkt, zamówienie, dostawę lub działanie platformy." },
+    { icon: "🚚", color: BRAND.accent, title: "Problem z dostawą", desc: "Brak dostawy, opóźnienie, błędny adres lub termin." },
+    { icon: "📝", color: "#64748B", title: "Inne", desc: "Wszystko, co nie pasuje do powyższych kategorii." },
+  ];
+
+  const features = [
+    { icon: "🔗", color: "#0d9488", title: "Powiązanie z zamówieniem", desc: "Zgłoszenie można od razu połączyć z konkretnym zamówieniem — kontekst widoczny od razu." },
+    { icon: "🧵", color: "#7c3aed", title: "Wątek odpowiedzi", desc: "Czat — każda strona dopisuje kolejne wiadomości, pełna historia rozmowy." },
+    { icon: "🔁", color: BRAND.primary, title: "Status: otwarte / rozwiązane", desc: "Po rozwiązaniu można ponownie otworzyć zgłoszenie, jeśli problem nie został w pełni załatwiony." },
+    { icon: "📣", color: BRAND.accent, title: "Eskalacja do BHF", desc: "Koordynator lub Supervisor przekazuje zgłoszenie zespołowi BHF, gdy zespół firmy nie jest w stanie pomóc." },
+  ];
+
+  return (
+    <div style={{ padding: "40px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>
+      <SlideHeader title="System zgłoszeń" subtitle="Pytanie, reklamacja lub problem z dostawą — bezpośrednio z platformy, z eskalacją do BHF" />
+
+      {/* FLOW */}
+      <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 24 }}>
+        {flow.map(({ label, icon, color, bg, action }, i) => (
+          <div key={label} style={{ display: "flex", alignItems: "center", flex: 1 }}>
+            <div style={{
+              flex: 1, background: bg, border: `2px solid ${color}${action ? "ff" : "44"}`,
+              borderRadius: 10, padding: "10px 12px", textAlign: "center",
+              ...(action ? { boxShadow: `0 0 0 3px ${color}22` } : {}),
+            }}>
+              <div style={{ fontSize: 20, marginBottom: 4 }}>{icon}</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color, lineHeight: 1.3 }}>{label}</div>
+            </div>
+            {i < flow.length - 1 && (
+              <div style={{ fontSize: 18, color: "#94a3b8", flexShrink: 0, padding: "0 6px" }}>→</div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* TWO COLUMNS */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: BRAND.dark, marginBottom: 12 }}>Kategorie zgłoszeń</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            {categories.map(({ icon, color, title, desc }) => (
+              <Card key={title} style={{ borderTop: `3px solid ${color}`, padding: 14 }}>
+                <div style={{ fontSize: 22, marginBottom: 6 }}>{icon}</div>
+                <div style={{ fontWeight: 700, fontSize: 13, color: BRAND.dark, marginBottom: 4 }}>{title}</div>
+                <p style={{ fontSize: 11.5, color: BRAND.subLight, margin: 0, lineHeight: 1.5 }}>{desc}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: BRAND.dark, marginBottom: 12 }}>Jak to działa?</p>
+          {features.map(({ icon, color, title, desc }) => (
+            <Card key={title} style={{ marginBottom: 10, padding: 14, borderLeft: `4px solid ${color}` }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 20, flexShrink: 0 }}>{icon}</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color, marginBottom: 4 }}>{title}</div>
+                  <p style={{ fontSize: 12, color: BRAND.subDark, margin: 0, lineHeight: 1.5 }}>{desc}</p>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SLIDE 12: KOORDYNATOR — PROGI AKCEPTACJI ────────────────────
+export function Slide12() {
+  const modes = [
+    { icon: "🔒", color: "#dc2626", bg: "#fef2f2", title: "Tylko Supervisor", desc: "Koordynator widzi zamówienia oczekujące, ale decyzję podejmuje wyłącznie Supervisor." },
+    { icon: "📐", color: BRAND.accent, bg: "#fff7ed", title: "Wg progów procentowych", desc: "Koordynator zatwierdza, jeśli przekroczenie limitu nie wykracza poza skonfigurowany próg." },
+    { icon: "🔓", color: "#16a34a", bg: "#f0fdf4", title: "Bez ograniczeń", desc: "Koordynator zatwierdza każde zamówienie przekraczające limit — tak jak Supervisor." },
+  ];
+
+  const tiers = [
+    { range: "0 – 100 zł", pct: "50%", example: "limit 80 zł → akceptowalne do 120 zł" },
+    { range: "100 – 1000 zł", pct: "15%", example: "limit 500 zł → akceptowalne do 575 zł" },
+    { range: "powyżej 1000 zł", pct: "10%", example: "limit 2000 zł → akceptowalne do 2200 zł" },
+  ];
+
+  return (
+    <div style={{ padding: "40px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>
+      <SlideHeader title="Koordynator — progi akceptacji ponad limit" subtitle="Tryb zatwierdzania konfigurowany per kontrakt — pełna kontrola nad tym, co koordynator może zrobić samodzielnie" />
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 24 }}>
+        {modes.map(({ icon, color, bg, title, desc }) => (
+          <Card key={title} style={{ background: bg, border: `1px solid ${color}33`, padding: 18 }}>
+            <div style={{ fontSize: 28, marginBottom: 8 }}>{icon}</div>
+            <div style={{ fontWeight: 800, fontSize: 15, color, marginBottom: 6 }}>{title}</div>
+            <p style={{ fontSize: 12.5, color: BRAND.subDark, margin: 0, lineHeight: 1.5 }}>{desc}</p>
+          </Card>
+        ))}
+      </div>
+
+      <p style={{ fontWeight: 700, fontSize: 14, color: BRAND.dark, marginBottom: 12 }}>
+        Przykładowe progi dla trybu „Wg progów procentowych" (konfigurowalne per kontrakt)
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 20 }}>
+        {tiers.map(({ range, pct, example }) => (
+          <Card key={range} style={{ borderTop: `4px solid ${BRAND.primary}`, textAlign: "center", padding: 18 }}>
+            <div style={{ fontSize: 13, color: BRAND.subLight, marginBottom: 6 }}>{range}</div>
+            <div style={{ fontSize: 28, fontWeight: 900, color: BRAND.primary, marginBottom: 8 }}>+{pct}</div>
+            <p style={{ fontSize: 12, color: BRAND.subDark, margin: 0, lineHeight: 1.5 }}>{example}</p>
+          </Card>
+        ))}
+      </div>
+
+      <Card style={{ background: BRAND.dark, border: "none", padding: "14px 20px" }}>
+        <p style={{ color: "#fff", fontSize: 13, margin: 0, textAlign: "center" }}>
+          💬 <strong>Zamówienie z uwagami</strong> zawsze trafia do Supervisora — niezależnie od trybu zatwierdzania koordynatora.
+        </p>
+      </Card>
+    </div>
+  );
+}
+
+// ─── SLIDE 13: SZABLONY ZAMÓWIEŃ I TYPY ZAMÓWIEŃ ─────────────────
+export function Slide13() {
+  const templateFeatures = [
+    { icon: "💾", color: BRAND.primary, title: "Zapisz zestaw produktów", desc: "Dowolna liczba szablonów per punkt dostawy — np. „Standardowe zamówienie miesięczne”." },
+    { icon: "✏️", color: "#0d9488", title: "Edytuj w każdej chwili", desc: "Dodawaj, usuwaj i zmieniaj ilości produktów w szablonie bez wpływu na już złożone zamówienia." },
+    { icon: "📥", color: "#7c3aed", title: "Import / eksport XLSX", desc: "Pobierz arkusz z produktami, wypełnij ilości offline i zaimportuj całą listę naraz." },
+    { icon: "🔘", color: BRAND.accent, title: "Aktywuj / dezaktywuj", desc: "Tymczasowo wyłącz szablon bez usuwania — np. na czas przerwy w dostawach." },
+  ];
+
+  const orderTypes = [
+    { title: "Cykliczne", icon: "🔁", color: BRAND.primary, freq: "1× w miesiącu", desc: "Główne, regularne zamówienie punktu dostawy. System pozwala złożyć tylko jedno cykliczne zamówienie w danym miesiącu." },
+    { title: "Domówienie", icon: "➕", color: BRAND.accent, freq: "bez limitu", desc: "Dodatkowe zamówienia poza cyklem — pilne potrzeby, zapomniane produkty, nadwyżki." },
+  ];
+
+  return (
+    <div style={{ padding: "40px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>
+      <SlideHeader title="Szablony zamówień i typy zamówień" subtitle="Przygotuj listę raz — składaj zamówienia szybciej każdego miesiąca" />
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: BRAND.dark, marginBottom: 12 }}>📋 Szablony zamówień</p>
+          {templateFeatures.map(({ icon, color, title, desc }) => (
+            <Card key={title} style={{ marginBottom: 10, padding: 14, borderLeft: `4px solid ${color}` }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 20, flexShrink: 0 }}>{icon}</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color, marginBottom: 4 }}>{title}</div>
+                  <p style={{ fontSize: 12, color: BRAND.subDark, margin: 0, lineHeight: 1.5 }}>{desc}</p>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: BRAND.dark, marginBottom: 12 }}>🔁 Typ zamówienia — osobne śledzenie dostaw</p>
+          {orderTypes.map(({ title, icon, color, freq, desc }) => (
+            <Card key={title} style={{ marginBottom: 14, borderTop: `4px solid ${color}`, padding: 0, overflow: "hidden" }}>
+              <div style={{ background: color, padding: "16px 20px", color: "#fff", display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ fontSize: 28 }}>{icon}</span>
+                <div>
+                  <div style={{ fontWeight: 800, fontSize: 17 }}>{title}</div>
+                  <div style={{ fontSize: 12, opacity: 0.9 }}>{freq}</div>
+                </div>
+              </div>
+              <div style={{ padding: "14px 20px" }}>
+                <p style={{ fontSize: 13, color: BRAND.subDark, margin: 0, lineHeight: 1.5 }}>{desc}</p>
+              </div>
+            </Card>
+          ))}
+          <Card style={{ background: "#eff6ff", border: `1px solid ${BRAND.primary}22`, padding: 14 }}>
+            <p style={{ fontSize: 12, color: BRAND.subDark, margin: 0, lineHeight: 1.5 }}>
+              📜 Historia zamówień filtrowana po typie — szybko sprawdzisz, czy zamówienie cykliczne na dany miesiąc zostało już złożone.
+            </p>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SLIDE 14: RAPORTY ZUŻYCIA ───────────────────────────────────
+export function Slide14() {
+  const summary = [
+    { icon: "📅", color: BRAND.primary, title: "Zakres dat", desc: "Domyślnie bieżący miesiąc — dowolny zakres „od – do”." },
+    { icon: "🎯", color: "#7c3aed", title: "Zakres punktów", desc: "Wszystkie punkty, jeden kontrakt albo wybrane punkty dostawy." },
+    { icon: "💰", color: "#16a34a", title: "Podsumowanie", desc: "Łączna wartość netto i liczba zamówień dla wybranego zakresu." },
+  ];
+
+  const details = [
+    { icon: "📦", color: BRAND.accent, title: "Rozbicie na produkty", desc: "Dla każdego punktu — kod, nazwa, ilość i wartość zamówionych produktów." },
+    { icon: "📊", color: "#0d9488", title: "Wykresy TOP 10", desc: "Wizualne porównanie punktów lub produktów o największej wartości." },
+    { icon: "🖨️", color: BRAND.primary, title: "Druk / PDF", desc: "Każdy raport można wydrukować lub zapisać jako PDF do archiwum." },
+  ];
+
+  return (
+    <div style={{ padding: "40px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>
+      <SlideHeader title="Raporty zużycia" subtitle="Supervisor — pełny obraz wydatków firmy, z podziałem na punkty i produkty" />
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: BRAND.dark, marginBottom: 12 }}>Podsumowanie — wszystkie punkty</p>
+          {summary.map(({ icon, color, title, desc }) => (
+            <Card key={title} style={{ marginBottom: 10, padding: 14, borderLeft: `4px solid ${color}` }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 20, flexShrink: 0 }}>{icon}</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color, marginBottom: 4 }}>{title}</div>
+                  <p style={{ fontSize: 12, color: BRAND.subDark, margin: 0, lineHeight: 1.5 }}>{desc}</p>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: BRAND.dark, marginBottom: 12 }}>Szczegóły per punkt dostawy</p>
+          {details.map(({ icon, color, title, desc }) => (
+            <Card key={title} style={{ marginBottom: 10, padding: 14, borderLeft: `4px solid ${color}` }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 20, flexShrink: 0 }}>{icon}</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color, marginBottom: 4 }}>{title}</div>
+                  <p style={{ fontSize: 12, color: BRAND.subDark, margin: 0, lineHeight: 1.5 }}>{desc}</p>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <Card style={{ marginTop: 4, background: BRAND.primary, border: "none", padding: "14px 20px" }}>
+        <p style={{ color: "#fff", fontSize: 13, margin: 0, textAlign: "center" }}>
+          📈 Dostępne w portalu pod <strong>„Raporty”</strong> — widoczne dla Supervisora, dla pełnego nadzoru nad budżetem firmy.
+        </p>
+      </Card>
+    </div>
+  );
+}
+
 // ─── EXPORTS ──────────────────────────────────────────────────────
 export { Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8 };
