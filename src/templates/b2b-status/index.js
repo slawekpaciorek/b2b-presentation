@@ -4,7 +4,7 @@ import ConfigForm from "./ConfigForm.jsx";
 const defaultConfig = {
   title: "Status Projektu BHF B2B",
   subtitle: "Przegląd zrealizowanych funkcji, otwartych zadań i planów",
-  date: "2026-06-01",
+  date: "2026-06-15",
 };
 
 export default {

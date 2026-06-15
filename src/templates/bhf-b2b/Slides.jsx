@@ -103,6 +103,9 @@ function Slide2() {
     { title:"Zamawiający", color:BRAND.primary, icon:"🛒",
       desc:"Pracownik firmy składający zamówienia dla przypisanych obiektów.",
       items:["Zamówienia dla swoich obiektów","Widzi produkty z kontraktu","Monitoruje status zamówień","Kontroluje limity miesięczne"] },
+    { title:"Koordynator", color:"#7c3aed", icon:"📊",
+      desc:"Pośredni szczebel — zatwierdza zamówienia w ramach progów limitu, bez pełnych uprawnień Supervisora.",
+      items:["Zatwierdza zamówienia w ramach progów limitu","Widzi pełny katalog produktów","Dla większych zespołów i wielu obiektów","Progi konfigurowane per kontrakt"] },
     { title:"Supervisor", color:"#0d9488", icon:"👁️",
       desc:"Przełożony zamawiających — widzi całość, zatwierdza zamówienia.",
       items:["Widzi zamówienia całej firmy","Zatwierdza lub odrzuca oczekujące","Edytuje zamówienia przed zatwierdzeniem","Pełny dostęp do katalogu produktów"] },
@@ -112,8 +115,8 @@ function Slide2() {
   ];
   return (
     <div style={{ padding:"40px 40px 32px", minHeight:"100vh", background:BRAND.lightBg }}>
-      <SlideHeader title="Dla kogo jest BHF B2B Platform?" subtitle="Trzy role, jedna platforma — każdy ma dokładnie to, czego potrzebuje" />
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:20 }}>
+      <SlideHeader title="Dla kogo jest BHF B2B Platform?" subtitle="Cztery role, jedna platforma — każdy ma dokładnie to, czego potrzebuje" />
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:16 }}>
         {roles.map(({ title, color, icon, desc, items }) => (
           <Card key={title} style={{ borderTop:`4px solid ${color}`, padding:0, overflow:"hidden" }}>
             <div style={{ background:color, padding:"20px 20px 16px", color:"#fff" }}>

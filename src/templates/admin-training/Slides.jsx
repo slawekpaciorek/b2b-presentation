@@ -74,6 +74,9 @@ export function Slide1({ config }) {
     { icon: "📋", label: "Zamówienia" },
     { icon: "📥", label: "Import danych" },
     { icon: "🔧", label: "Super Admin" },
+    { icon: "📜", label: "Umowy i dokumenty" },
+    { icon: "💬", label: "Zgłoszenia" },
+    { icon: "📈", label: "Aktywność klientów" },
   ];
   return (
     <div style={{
@@ -129,6 +132,10 @@ export function Slide2({ config }) {
     { icon: "📋", color: "#0d9488",      title: "Zamówienia",         path: "/orders",        desc: "Lista zamówień, zmiana statusu, eksport XML / ZIP" },
     { icon: "📥", color: "#db2777",      title: "Import danych",      path: "/import",        desc: "Masowy import klientów, użytkowników, produktów" },
     { icon: "🔧", color: "#475569",      title: "Super Admin",        path: "/super-admin",   desc: "Metryki, backup bazy, reset, konfiguracja sprzedawcy" },
+    { icon: "📜", color: "#0ea5e9",      title: "Umowy i dokumenty",  path: "/admin/legal",      desc: "Regulamin, RODO, umowy z klientami + przedstawiciele kontrahenta" },
+    { icon: "💬", color: "#f59e0b",      title: "Zgłoszenia",         path: "/admin/zgloszenia", desc: "Czat z klientami — pytania i problemy, z eskalacją do zespołu BHF" },
+    { icon: "📈", color: "#dc2626",      title: "Aktywność klientów", path: "/admin/aktywnosc",  desc: "Regularność zamówień, dynamika wartości, zmiany w asortymencie" },
+    { icon: "📝", color: "#65a30d",      title: "Notatki",            path: "/admin/notes",      desc: "Wewnętrzne uwagi i wątki dyskusyjne o klientach i zamówieniach" },
   ];
   return (
     <div style={{ padding: "36px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>
@@ -168,6 +175,7 @@ export function Slide3() {
     { label: "Min. wartość zamówienia", desc: "Jeśli ustawiona — zamówienie poniżej tej kwoty generuje dopłatę transportową" },
     { label: "Dopłata transportowa", desc: "Kwota w PLN doliczana automatycznie gdy zamówienie < minimum" },
     { label: "Nazwa dopłaty", desc: "Opis widoczny w zamówieniu (np. 'Dopłata za mały zamówienie')" },
+    { label: "Druga działalność (per punkt)", desc: "Alternatywny NIP/ILN dla wybranego punktu dostawy — używany w eksporcie XML, gdy odbiorca różni się od głównego klienta" },
   ];
   return (
     <div style={{ padding: "36px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>
@@ -217,7 +225,7 @@ export function Slide4() {
   const roles = [
     { role: "ZAMAWIAJĄCY", color: BRAND.primary,  icon: "🛒", desc: "Składa zamówienia dla przypisanych punktów dostawy. Widzi produkty ze swojego kontraktu.", path: "Portal" },
     { role: "SUPERVISOR",  color: "#0d9488",       icon: "👁️", desc: "Zatwierdza zamówienia całej firmy. Edytuje zamówienia przed zatwierdzeniem. Widzi pełny katalog.", path: "Portal" },
-    { role: "KOORDYNATOR", color: "#7c3aed",       icon: "📊", desc: "Dostęp tylko do odczytu zamówień i statystyk. Nie składa zamówień, nie zatwierdza.", path: "Portal" },
+    { role: "KOORDYNATOR", color: "#7c3aed",       icon: "📊", desc: "Zatwierdza zamówienia w ramach progów limitu skonfigurowanych dla kontraktu. Widzi pełny katalog — pośredni szczebel między Zamawiającym a Supervisorem.", path: "Portal" },
     { role: "ADMIN",       color: BRAND.accent,    icon: "⚙️", desc: "Pełny dostęp do panelu administracyjnego. Zarządza całą platformą.", path: "Admin" },
   ];
   const steps = [
@@ -414,7 +422,7 @@ export function Slide7() {
           </Card>
           <Card style={{ marginBottom: 12 }}>
             <p style={{ fontWeight: 600, fontSize: 12.5, color: BRAND.dark, marginBottom: 8 }}>Filtry wyszukiwania</p>
-            {["Klient biznesowy", "Status zamówienia", "Oddział BHF", "Wyszukaj punkt dostawy", "Numer kontraktu", "Numer zamówienia (np. POCZTA-00042)"].map(f => (
+            {["Klient biznesowy", "Status zamówienia", "Oddział BHF", "Wyszukaj punkt dostawy", "Numer kontraktu", "Numer zamówienia (np. POCZTA-00042)", "Typ zamówienia (cykliczne / domówienie)"].map(f => (
               <div key={f} style={{ display: "flex", gap: 8, marginBottom: 5 }}>
                 <span style={{ color: BRAND.subLight, fontSize: 12 }}>▸</span>
                 <span style={{ fontSize: 12, color: BRAND.subDark }}>{f}</span>
@@ -526,10 +534,10 @@ export function Slide9({ config }) {
   const roadmap = [
     { icon: "🔁", color: BRAND.primary,  label: "Zamów ponownie",     desc: "Powtórz stare zamówienie jednym kliknięciem" },
     { icon: "📄", color: "#0d9488",      label: "PDF zamówienia",      desc: "Pobierz potwierdzenie do archiwum lub klienta" },
-    { icon: "📋", color: "#7c3aed",      label: "Szablony zamówień",   desc: "Zapisz ulubiony zestaw produktów jako szablon" },
-    { icon: "📊", color: BRAND.accent,   label: "Statystyki",          desc: "Obroty, top produkty, dashboard Supervisora" },
+    { icon: "💲", color: "#7c3aed",      label: "Alert zmiany ceny",   desc: "Powiadomienie, gdy cena produktu się zmieni" },
+    { icon: "🏷️", color: BRAND.accent,   label: "Tagi produktów",      desc: "Filtrowanie po cechach: ekologiczny, antypoślizgowy…" },
     { icon: "📧", color: "#db2777",      label: "Powiadomienia e-mail", desc: "Zatwierdzone / odrzucone — prosto na skrzynkę" },
-    { icon: "📈", color: "#16a34a",      label: "Raport miesięczny",   desc: "XLSX: obroty per obiekt i per produkt" },
+    { icon: "💳", color: "#16a34a",      label: "Logika płatności",    desc: "Przelew / karta / przedpłata — per klient lub kontrakt" },
   ];
   return (
     <div style={{ padding: "36px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>

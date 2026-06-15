@@ -1,20 +1,25 @@
 import { BRAND } from "../../theme";
 
 const DONE = [
-  "Rola SUPER_ADMIN + panel (backup H2, soft reset, migracja MySQL, konfiguracja)",
-  "Backup MySQL przez JDBC + pobieranie pliku .sql z panelu",
-  "Monitoring rozmiaru bazy danych (information_schema)",
-  "Metryki systemu: RAM, CPU, Heap, Dysk, Sesje, HikariCP",
-  "Statystyki platformy w karcie sesji (klienci, użytkownicy, zamówienia, oczekujące)",
-  "Karta błędów aplikacji z licznikiem 24h → link do logów",
-  "Rola KOORDYNATOR — formularz, security, instrukcje",
-  "Etykiety ról z metody getLabel() — koniec z hardkodowanymi ternary w szablonach",
-  "Nazwa skrócona klienta (shortName) + automatyczny numer zamówienia (ACME-00042)",
-  "SchemaUpdater: ADD COLUMN IF NOT EXISTS dla short_name i order_number",
-  "Filtrowanie zamówień: status, kontrakt, obiekt, osoba — admin i portal",
-  "Dopłata transportowa na kontrakcie (minOrderValue, lowOrderSurcharge)",
-  "Dashboard supervisora z licznikiem oczekujących zamówień",
-  "Instrukcja admina i portalu zaktualizowane (role, numery, backup)",
+  "Pełny panel SUPER_ADMIN — backup H2/MySQL (w transakcji REPEATABLE READ), soft reset z wyborem zakresu danych, migracja do MySQL, konfiguracja sprzedawcy",
+  "Metryki systemu (RAM, CPU, Heap, dysk, sesje, HikariCP) + karta błędów aplikacji z licznikiem 24h",
+  "5 ról: SUPER_ADMIN, ADMIN, SUPERVISOR, KOORDYNATOR, ZAMAWIAJĄCY — pełna konfiguracja uprawnień i routingu",
+  "Nazwa skrócona klienta + automatyczna numeracja zamówień (FIRMA-00042, FIRMA-S-00001 dla specjalnych)",
+  "Dopłata transportowa przy zamówieniach poniżej minimalnej wartości kontraktu",
+  "Pełna historia statusów zamówień — timeline (kto, kiedy, jaki status)",
+  "Zamówienia specjalne — bez punktu dostawy, odbiór osobisty z oddziału",
+  "Typ zamówienia: cykliczne (1×/miesiąc, auto-szablon) vs domówienie",
+  "Konfigurowalne progi akceptacji ponad limit dla koordynatora — per kontrakt, per przedział wartości limitu",
+  "Pasek wykorzystania limitu — widoczny przy zamówieniu i zbiorczo na dashboardzie",
+  "\"Druga działalność\" — alternatywny nabywca (ILN/NIP) per punkt dostawy",
+  "Wyszukiwarka produktów spoza kontraktu — dodawanie do zamówienia w locie",
+  "Moduł dokumentów prawnych i umów — regulamin, RODO, polityka prywatności, umowy z klientami + przedstawiciele",
+  "System zgłoszeń klientów — hierarchiczny czat ZAMAWIAJĄCY → zespół → BHF, z eskalacją",
+  "Raporty zużycia — podsumowanie per punkt + rozbicie na produkty, wykresy, druk/PDF",
+  "Raport \"Aktywność klientów\" — regularność zamówień, dynamika wartości, zmiany produktowe (nocny job)",
+  "Panel dyskusyjny w uwagach wewnętrznych (/admin/notes) — wątki odpowiedzi",
+  "Wydłużona sesja (4h) dla SUPERVISOR/KOORDYNATOR/ADMIN, 1h dla ZAMAWIAJĄCEGO",
+  "Refaktoring kodu — podział dużych kontrolerów, scentralizowana autoryzacja, eliminacja duplikatów",
 ];
 
 const OPEN = [
@@ -23,18 +28,24 @@ const OPEN = [
     desc: "Jeden supervisor/koordynator/zamawiający może obsługiwać wiele firm (działalności). Wymaga nowej tabeli user_clients, przebudowy zapytań i formularzy.",
     complexity: "Duża",
   },
+  {
+    label: "Odseparowanie zamówień per magazyn/oddział",
+    desc: "Branch-based filtering — rozdzielenie widoczności zamówień i danych pomiędzy oddziały BHF (np. Dzielna/Główny). Większa zmiana architektoniczna, wymaga ustalenia zakresu z zarządem.",
+    complexity: "Duża",
+  },
 ];
 
 const ROADMAP = [
   { priority: "Wysoki",  icon: "🔁", name: "Zamów ponownie",        desc: "Kopiuj pozycje starego zamówienia do nowego" },
-  { priority: "Wysoki",  icon: "📄", name: "PDF zamówienia",         desc: "Pobierz potwierdzenie jako PDF" },
-  { priority: "Średni",  icon: "📊", name: "Statystyki supervisora", desc: "Obroty, top produkty, dashboard portalu" },
-  { priority: "Średni",  icon: "📈", name: "Raport miesięczny",      desc: "XLSX: obroty per obiekt i per produkt" },
-  { priority: "Średni",  icon: "📋", name: "Szablony zamówień",      desc: "Zapisz zestaw produktów jako szablon" },
-  { priority: "Średni",  icon: "🛒", name: "Stały koszyk",           desc: "Koszyk przeżywa zamknięcie przeglądarki" },
+  { priority: "Średni",  icon: "💲", name: "Powiadomienie o cenie",  desc: "Alert dla supervisora przy zmianie ceny produktu w kontrakcie" },
+  { priority: "Średni",  icon: "🔄", name: "Grupowa podmiana produktu", desc: "Zastąp produkt X→Y we wszystkich/wybranych kontraktach" },
+  { priority: "Średni",  icon: "💳", name: "Logika płatności",       desc: "Przelew / karta przy odbiorze / przedpłata — per klient lub kontrakt" },
+  { priority: "Średni",  icon: "📄", name: "PDF zamówienia",         desc: "Pobierz potwierdzenie zamówienia jako PDF" },
+  { priority: "Niski",   icon: "🏷️", name: "Tagi produktów",         desc: "Filtrowanie po cechach: ekologiczny, antypoślizgowy itp." },
   { priority: "Niski",   icon: "📧", name: "Powiadomienia e-mail",   desc: "Zatwierdzono / odrzucono zamówienie" },
   { priority: "Niski",   icon: "🗂️", name: "Archiwizacja zamówień",  desc: "Przenoszenie starych rekordów po X miesiącach" },
   { priority: "Niski",   icon: "📱", name: "PWA",                    desc: "Instalacja na telefonie, tryb offline" },
+  { priority: "Niski",   icon: "🧮", name: "Kalkulator obiektu",     desc: "Rekomendowane ilości / koszty na podstawie historii" },
 ];
 
 const PRIORITY_COLOR = {
