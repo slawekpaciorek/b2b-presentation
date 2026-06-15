@@ -1,4 +1,4 @@
-import { Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8, Slide9, Slide10 } from "./Slides.jsx";
+import { Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8, Slide9, Slide10, Slide11, Slide12 } from "./Slides.jsx";
 
 export const globalStyle = `
   .slide { animation: fadeIn 0.45s ease; }
@@ -15,6 +15,8 @@ export const SLIDES = [
   { id: 5,  label: "Grupy cenowe",     Component: Slide5  },
   { id: 6,  label: "Produkty",         Component: Slide6  },
   { id: 7,  label: "Zamówienia",       Component: Slide7  },
+  { id: 11, label: "Koszyki i typy",    Component: Slide11 },
+  { id: 12, label: "Progi / Zgłoszenia / Raporty", Component: Slide12 },
   { id: 8,  label: "Import masowy",    Component: Slide8  },
   { id: 9,  label: "Oszczędność",       Component: Slide9  },
   { id: 10, label: "Podsumowanie",     Component: Slide10 },

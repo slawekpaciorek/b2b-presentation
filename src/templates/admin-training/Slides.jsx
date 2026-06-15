@@ -669,3 +669,153 @@ export function Slide10({ config }) {
     </div>
   );
 }
+
+// ─── SLIDE 11: KOSZYKI SZABLONOWE I TYPY ZAMÓWIEŃ ───────────────────────────
+
+export function Slide11() {
+  const steps = [
+    { n: "1", color: BRAND.primary, title: "Otwórz koszyk szablonowy", text: "Kontrakt → punkty dostawy → ikona 🧺 przy punkcie ('Koszyki szablonowe')" },
+    { n: "2", color: "#16a34a",     title: "Utwórz szablon",          text: "Podaj nazwę (np. 'Zamówienie tygodniowe'). Jeden punkt może mieć wiele szablonów" },
+    { n: "3", color: "#7c3aed",     title: "Dodaj produkty",          text: "Wyszukiwarka + domyślna ilość, lub import XLSX (kolumny: Kod produktu, Ilość)" },
+    { n: "4", color: BRAND.accent,  title: "Aktywuj szablon",         text: "Tylko aktywne szablony są widoczne klientowi przy zamówieniu cyklicznym" },
+  ];
+  const orderTypes = [
+    {
+      icon: "🔁", color: BRAND.primary, title: "Cykliczne",
+      items: [
+        "Maksymalnie jedno na miesiąc, na punkt dostawy",
+        "System automatycznie podstawia produkty z pierwszego aktywnego szablonu",
+        "Klient może zmienić ilości lub usunąć produkty przed wysłaniem",
+      ],
+    },
+    {
+      icon: "➕", color: "#0d9488", title: "Domówienie",
+      items: [
+        "Bez limitu liczby — dla zamówień doraźnych",
+        "Szablon NIE jest automatycznie podstawiany",
+        "Używane, gdy w danym miesiącu trzeba domówić dodatkowy towar",
+      ],
+    },
+  ];
+  return (
+    <div style={{ padding: "36px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>
+      <SlideHeader
+        title="Koszyki szablonowe i typy zamówień"
+        subtitle="Admin przygotowuje koszyk produktów per punkt dostawy — klient korzysta z niego przy zamówieniach cyklicznych"
+      />
+      <div style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: 20 }}>
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 13, color: BRAND.dark, marginBottom: 12 }}>Jak skonfigurować koszyk szablonowy?</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            {steps.map(({ n, color, title, text }) => (
+              <Card key={n} style={{ borderLeft: `4px solid ${color}`, padding: 16 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                  <StepNum n={n} color={color} />
+                  <span style={{ fontWeight: 700, fontSize: 13, color: BRAND.dark }}>{title}</span>
+                </div>
+                <p style={{ fontSize: 12, color: BRAND.subDark, margin: 0, lineHeight: 1.5 }}>{text}</p>
+              </Card>
+            ))}
+          </div>
+          <Card style={{ marginTop: 14, background: "#eff6ff", border: `1px solid ${BRAND.primary}33` }}>
+            <p style={{ fontWeight: 700, fontSize: 12.5, color: BRAND.primary, marginBottom: 6 }}>💡 Częste pytanie klienta</p>
+            <p style={{ fontSize: 12, color: BRAND.subDark, margin: 0, lineHeight: 1.6 }}>
+              "Dlaczego produkty same się wpisały do zamówienia?" — to działanie aktywnego koszyka szablonowego skonfigurowanego dla tego punktu dostawy. Wystarczy zmienić ilości albo usunąć pozycje przed wysłaniem.
+            </p>
+          </Card>
+        </div>
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 13, color: BRAND.dark, marginBottom: 12 }}>Cykliczne vs. domówienie</p>
+          {orderTypes.map(({ icon, color, title, items }) => (
+            <Card key={title} style={{ marginBottom: 14, borderTop: `4px solid ${color}`, padding: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                <span style={{ fontSize: 22 }}>{icon}</span>
+                <span style={{ fontWeight: 800, fontSize: 15, color }}>{title}</span>
+              </div>
+              {items.map(item => (
+                <InfoRow key={item} icon="›" text={item} color={color} />
+              ))}
+            </Card>
+          ))}
+          <Card style={{ background: BRAND.dark, border: "none", padding: 14 }}>
+            <p style={{ fontSize: 12, color: "#93c5fd", margin: 0, lineHeight: 1.6 }}>
+              ⚠️ Druga próba złożenia zamówienia cyklicznego w tym samym miesiącu zostaje zablokowana z komunikatem: "W tym miesiącu zostało już złożone zamówienie cykliczne dla tego obiektu. Wybierz „Domówienie"."
+            </p>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SLIDE 12: PROGI KOORDYNATORA, ZGŁOSZENIA I RAPORTY ─────────────────────
+
+export function Slide12() {
+  const modes = [
+    { mode: "NONE",      label: "Tylko supervisor",        color: "#dc2626",   desc: "Każde zamówienie ponad limit czeka na Supervisora — Koordynator nie ma nic do zatwierdzenia." },
+    { mode: "THRESHOLD", label: "Wg progów procentowych",   color: BRAND.accent, desc: "Koordynator zatwierdza przekroczenie do określonego % limitu — wyżej trafia do Supervisora." },
+    { mode: "UNLIMITED", label: "Bez ograniczeń",           color: "#16a34a",   desc: "Koordynator zatwierdza każde przekroczenie limitu samodzielnie." },
+  ];
+  const tiers = [
+    { range: "0 – 100 zł",        pct: "+50%", color: BRAND.primary },
+    { range: "100 – 1000 zł",     pct: "+15%", color: "#7c3aed" },
+    { range: "powyżej 1000 zł",   pct: "+10%", color: BRAND.accent },
+  ];
+  const categories = ["Reklamacja", "Pytanie", "Problem z dostawą", "Inne"];
+  return (
+    <div style={{ padding: "36px 40px 28px", minHeight: "100vh", background: BRAND.lightBg }}>
+      <SlideHeader
+        title="Progi koordynatora, zgłoszenia i raporty"
+        subtitle="Trzy funkcje skonfigurowane lub obsługiwane samodzielnie przez klienta — admin powinien wiedzieć, jak działają"
+      />
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 13, color: BRAND.dark, marginBottom: 12 }}>Progi akceptacji ponad limit (Koordynator)</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
+            {modes.map(({ mode, label, color, desc }) => (
+              <Card key={mode} style={{ borderTop: `4px solid ${color}`, padding: 12 }}>
+                <Badge small color={color} bg={`${color}18`}>{mode}</Badge>
+                <div style={{ fontWeight: 700, fontSize: 12, color: BRAND.dark, margin: "6px 0 4px" }}>{label}</div>
+                <p style={{ fontSize: 11, color: BRAND.subLight, margin: 0, lineHeight: 1.4 }}>{desc}</p>
+              </Card>
+            ))}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
+            {tiers.map(({ range, pct, color }) => (
+              <Card key={range} style={{ textAlign: "center", padding: 12, borderLeft: `4px solid ${color}` }}>
+                <div style={{ fontSize: 11, color: BRAND.subLight, marginBottom: 4 }}>{range}</div>
+                <div style={{ fontWeight: 800, fontSize: 18, color }}>{pct}</div>
+              </Card>
+            ))}
+          </div>
+          <Card style={{ background: "#fff7ed", border: `1px solid ${BRAND.accent}33` }}>
+            <p style={{ fontWeight: 700, fontSize: 12.5, color: BRAND.accent, marginBottom: 6 }}>📌 Kto to konfiguruje?</p>
+            <p style={{ fontSize: 12, color: BRAND.subDark, margin: 0, lineHeight: 1.6 }}>
+              Wyłącznie <strong>Supervisor klienta</strong>, samodzielnie, w portalu (Ustawienia → "Progi akceptacji ponad limit") — osobno dla każdego kontraktu. Admin nie ustawia tego w panelu, ale dobrze znać te wartości domyślne, gdy klient pyta, dlaczego Koordynator mógł (albo nie mógł) zatwierdzić zamówienie ponad limit.
+            </p>
+          </Card>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <Card style={{ borderTop: "4px solid #f59e0b" }}>
+            <p style={{ fontWeight: 700, fontSize: 13, color: BRAND.dark, marginBottom: 10 }}>💬 System zgłoszeń — /admin/zgloszenia</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
+              {categories.map(c => (
+                <div key={c} style={{ background: "#f1f5f9", borderRadius: 8, padding: "6px 10px", fontSize: 12, color: BRAND.subDark, textAlign: "center" }}>{c}</div>
+              ))}
+            </div>
+            <InfoRow icon="①" text="Klient rozpoczyna rozmowę na poziomie „Zespół” — widoczna tylko dla jego firmy" color="#f59e0b" />
+            <InfoRow icon="②" text="Koordynator lub Supervisor może eskalować zgłoszenie do poziomu „BHF”" color="#f59e0b" />
+            <InfoRow icon="③" text="Do /admin/zgloszenia trafiają TYLKO zgłoszenia eskalowane do poziomu „BHF”" color="#f59e0b" />
+            <InfoRow icon="④" text="Admin odpowiada, oznacza jako rozwiązane lub otwiera ponownie" color="#f59e0b" />
+          </Card>
+          <Card style={{ background: BRAND.dark, border: "none" }}>
+            <p style={{ fontWeight: 700, fontSize: 13, color: "#fff", marginBottom: 8 }}>📊 Raporty zużycia — narzędzie klienta</p>
+            <p style={{ fontSize: 12, color: "#93c5fd", margin: 0, lineHeight: 1.6 }}>
+              Supervisor ma w portalu własny raport zużycia (podsumowanie per punkt dostawy, rozbicie na produkty, wykresy TOP 10, druk/PDF). To narzędzie klienta do samodzielnej analizy — niezależne od raportu <strong>Aktywność klientów</strong> w panelu admina.
+            </p>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
